@@ -49,10 +49,12 @@ class sspmod_perun_Auth_Process_PerunAttributes extends SimpleSAML_Auth_Processi
 		if (isset($request['perun']['user'])) {
 			$user = $request['perun']['user'];
 		} else {
-			throw new SimpleSAML_Error_Exception("perun:PerunAttributes: " .
-					"missing mandatory field 'perun.user' in request." .
-					"Hint: Have you configured PerunIdentity filter before this filter?"
-			);
+			// throw new SimpleSAML_Error_Exception("perun:PerunAttributes: " .
+			// 		"missing mandatory field 'perun.user' in request." .
+			// 		"Hint: Have you configured PerunIdentity filter before this filter?"
+			// );
+			SimpleSAML\Logger::debug("perun:PerunAttributes: 'perun.user' attribute has NOT been found in request. Continuing to next Auth Filter...");
+			return;
 		}
 
 
@@ -92,7 +94,7 @@ class sspmod_perun_Auth_Process_PerunAttributes extends SimpleSAML_Auth_Processi
 
 			// write $value to all SP attributes
 			foreach ($attrArray as $attribute) {
-				$request['Attributes'][$attribute] = $value;
+				$request['Attributes'][$attribute] = array_merge($request['Attributes'][$attribute], $value);
 			}
 
 		}

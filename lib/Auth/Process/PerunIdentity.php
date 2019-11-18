@@ -84,12 +84,12 @@ class sspmod_perun_Auth_Process_PerunIdentity extends SimpleSAML_Auth_Processing
 		if (!isset($config[self::REGISTER_URL_BASE])) {
 			throw new SimpleSAML_Error_Exception("perun:PerunIdentity: missing mandatory config option '".self::REGISTER_URL_BASE."'.");
 		}
-		if (!isset($config[self::REGISTER_URL])) {
-			throw new SimpleSAML_Error_Exception("perun:PerunIdentity: missing mandatory config option '".self::REGISTER_URL."'.");
-		}
-		if (!isset($config[self::VO_SHORTNAME])) {
-			throw new SimpleSAML_Error_Exception("perun:PerunIdentity: missing mandatory config option '".self::VO_SHORTNAME."'.");
-		}
+		// if (!isset($config[self::REGISTER_URL])) {
+		// 	throw new SimpleSAML_Error_Exception("perun:PerunIdentity: missing mandatory config option '".self::REGISTER_URL."'.");
+		// }
+		// if (!isset($config[self::VO_SHORTNAME])) {
+		// 	throw new SimpleSAML_Error_Exception("perun:PerunIdentity: missing mandatory config option '".self::VO_SHORTNAME."'.");
+		// }
 		if (!isset($config[self::PERUN_FACILITY_CHECK_GROUP_MEMBERSHIP_ATTR])) {
 			throw new SimpleSAML_Error_Exception("perun:PerunIdentity: missing mandatory config option '".self::PERUN_FACILITY_CHECK_GROUP_MEMBERSHIP_ATTR."'.");
 		}
@@ -170,29 +170,35 @@ class sspmod_perun_Auth_Process_PerunIdentity extends SimpleSAML_Auth_Processing
 			$this->registerUrl = $request['SPMetadata'][self::REGISTER_URL];
 		}
 
-		$this->getSPAttributes($this->spEntityId);
+		// $this->getSPAttributes($this->spEntityId);
 
 		$user = $this->adapter->getPerunUser($idpEntityId, $uids);
 
-		$this->checkMemberStateDefaultVo($request, $user, $uids);
+		if ($user === null) {
+			SimpleSAML\Logger::info('Perun user with identity/ies: '. implode(',', $uids).' has NOT been found.');
+			SimpleSAML\Logger::debug("perun:PerunIdentity: Perun user has NOT been found. Continuing to next Auth Filter...");
+			return;
+		}
+
+		//$this->checkMemberStateDefaultVo($request, $user, $uids);
 
 		$groups = $this->adapter->getUsersGroupsOnFacility($this->spEntityId,$user->getId());
 
-		if ($this->checkGroupMembership && (is_null($groups) || empty($groups))) {
-			if ($this->allowRegistrationToGroups) {
-				$vosForRegistration = $this->getVosForRegistration($user);
+		// if ($this->checkGroupMembership && (is_null($groups) || empty($groups))) {
+		// 	if ($this->allowRegistrationToGroups) {
+		// 		$vosForRegistration = $this->getVosForRegistration($user);
 
-				if (empty($vosForRegistration)) {
-					SimpleSAML\Logger::warning('Perun user with name: '. $user->getName() .' is not valid member of any assigned VO for SP with entityId: (' . $this->spEntityId . ') and there are no VO for registration.');
-					$this->unauthorized($request);
-				}
-				$this->register($request, $vosForRegistration);
+		// 		if (empty($vosForRegistration)) {
+		// 			SimpleSAML\Logger::warning('Perun user with name: '. $user->getName() .' is not valid member of any assigned VO for SP with entityId: (' . $this->spEntityId . ') and there are no VO for registration.');
+		// 			$this->unauthorized($request);
+		// 		}
+		// 		$this->register($request, $vosForRegistration);
 
-			} else {
-				SimpleSAML\Logger::warning('Perun user with identity/ies: '. implode(',', $uids) .' is not member of any assigned group for resource (' . $this->spEntityId . ') and registration to groups is disabled.');
-				$this->unauthorized($request);
-			}
-		}
+		// 	} else {
+		// 		SimpleSAML\Logger::warning('Perun user with identity/ies: '. implode(',', $uids) .' is not member of any assigned group for resource (' . $this->spEntityId . ') and registration to groups is disabled.');
+		// 		$this->unauthorized($request);
+		// 	}
+		// }
 
 		SimpleSAML\Logger::info('Perun user with identity/ies: '. implode(',', $uids) .' has been found and SP has sufficient rights to get info about him. '.
 				'User '.$user->getName().' with id: '.$user->getId().' is being set to request');
