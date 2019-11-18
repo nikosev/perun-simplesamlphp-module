@@ -122,7 +122,7 @@ class sspmod_perun_Auth_Process_ForceAup extends SimpleSAML_Auth_ProcessingFilte
 			}
 
 			if (empty($requiredAups) && empty($voShortNames)) {
-				SimpleSAML\Logger::debug('Perun.ForceAup - No required Aups for facility with EntityId: ' . $request['SPMetadata']['entityid'] );
+				SimpleSAML_Logger::debug('Perun.ForceAup - No required Aups for facility with EntityId: ' . $request['SPMetadata']['entityid'] );
 				return;
 			}
 
@@ -177,18 +177,18 @@ class sspmod_perun_Auth_Process_ForceAup extends SimpleSAML_Auth_ProcessingFilte
 			}
 
 		} catch (Exception $ex) {
-			SimpleSAML\Logger::warning("perun:ForceAup - " . $ex->getMessage());
+			SimpleSAML_Logger::warning("perun:ForceAup - " . $ex->getMessage());
 			$newAups = array();
 		}
 
-		SimpleSAML\Logger::debug("perun:ForceAup - NewAups: " . print_r($newAups, true));
+		SimpleSAML_Logger::debug("perun:ForceAup - NewAups: " . print_r($newAups, true));
 
 		if (!empty($newAups)) {
 			$request[self::UID_ATTR] = $this->uidAttr;
 			$request[self::PERUN_USER_AUP_ATTR] = $this->perunUserAupAttr;
 			$request['newAups'] = $newAups;
 			$id = SimpleSAML_Auth_State::saveState($request, 'perun:forceAup');
-			$url = SimpleSAML\Module::getModuleURL('perun/force_aup_page.php');
+			$url = SimpleSAML_Module::getModuleURL('perun/force_aup_page.php');
 			\SimpleSAML\Utils\HTTP::redirectTrustedURL($url, array('StateId' => $id));
 		}
 

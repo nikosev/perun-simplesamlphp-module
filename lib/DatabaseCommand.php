@@ -36,7 +36,7 @@ class DatabaseCommand
 		if ($stmt) {
 			$ex =$stmt->execute();
 			if ($ex === false) {
-				SimpleSAML\Logger::error("Error during select all from " . $table);
+				SimpleSAML_Logger::error("Error during select all from " . $table);
 			}
 
 			$stmt->bind_result($timestamp, $entityId, $reason);
@@ -50,7 +50,7 @@ class DatabaseCommand
 
 			$stmt->close();
 		} else {
-			SimpleSAML\Logger::error("Error during preparing statement");
+			SimpleSAML_Logger::error("Error during preparing statement");
 		}
 
 		$conn->close();
@@ -82,7 +82,7 @@ class DatabaseCommand
 		if ($stmt) {
 			$ex =$stmt->execute();
 			if ($ex === false) {
-				SimpleSAML\Logger::error("Error during select all entityIds from " . $table);
+				SimpleSAML_Logger::error("Error during select all entityIds from " . $table);
 			}
 
 			$stmt->bind_result($timestamp, $entityId, $reason);
@@ -92,7 +92,7 @@ class DatabaseCommand
 
 			$stmt->close();
 		} else {
-			SimpleSAML\Logger::error("Error during preparing statement");
+			SimpleSAML_Logger::error("Error during preparing statement");
 		}
 
 		$conn->close();
@@ -126,13 +126,13 @@ class DatabaseCommand
 			$stmt->bind_param("ss", $entityId, $reason);
 			$ex =$stmt->execute();
 			if ($ex === false) {
-				SimpleSAML\Logger::error("Error during inserting entityId " . $entityId . " into " . $table);
+				SimpleSAML_Logger::error("Error during inserting entityId " . $entityId . " into " . $table);
 			}
 
-			SimpleSAML\Logger::debug("EntityId " . $entityId . " was inserted into " . $table);
+			SimpleSAML_Logger::debug("EntityId " . $entityId . " was inserted into " . $table);
 			$stmt->close();
 		} else {
-			SimpleSAML\Logger::error("Error during preparing statement");
+			SimpleSAML_Logger::error("Error during preparing statement");
 		}
 
 		$conn->close();
@@ -163,13 +163,13 @@ class DatabaseCommand
 			$stmt->bind_param("s", $entityId);
 			$ex =$stmt->execute();
 			if ($ex === false) {
-				SimpleSAML\Logger::error("Error during deleting entityId " . $entityId . " from " . $table);
+				SimpleSAML_Logger::error("Error during deleting entityId " . $entityId . " from " . $table);
 			}
 
-			SimpleSAML\Logger::debug("EntityId " . $entityId . " was deleted from " . $table);
+			SimpleSAML_Logger::debug("EntityId " . $entityId . " was deleted from " . $table);
 			$stmt->close();
 		} else {
-			SimpleSAML\Logger::error("Error during preparing statement");
+			SimpleSAML_Logger::error("Error during preparing statement");
 		}
 
 		$conn->close();

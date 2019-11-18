@@ -9,7 +9,7 @@
 
 
 $this->data['header'] = "";
-$this->data['head'] = '<link rel="stylesheet"  media="screen" type="text/css" href="' . SimpleSAML\Module::getModuleUrl('perun/res/css/perun_identity_go_to_registration.css')  . '" />';
+$this->data['head'] = '<link rel="stylesheet"  media="screen" type="text/css" href="' . SimpleSAML_Module::getModuleUrl('perun/res/css/perun_identity_go_to_registration.css')  . '" />';
 
 $spMetadata = $this->data['SPMetadata'];
 $serviceName = '';

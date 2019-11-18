@@ -10,7 +10,7 @@ $instanceName = $config->getString('instance_name', '');
 
 $this->data['header'] = $instanceName . ' ' .  $this->t('{perun:status:aai}') . ' ' . $this->t('{perun:status:header}');
 $this->data['head'] = '<link rel="stylesheet"  media="screen" type="text/css" href="' .
-                      SimpleSAML\Module::getModuleUrl('perun/res/css/status.css') . '" />';
+                      SimpleSAML_Module::getModuleUrl('perun/res/css/status.css') . '" />';
 
 $services = $this->data['services'];
 

@@ -239,7 +239,7 @@ class sspmod_perun_AdapterLdap extends sspmod_perun_Adapter
 		// 	"(&(objectClass=perunResource)(entityID=$spEntityId))",
 		// 	array("perunResourceId")
 		// );
-		// SimpleSAML\Logger::debug("Resources - ".var_export($resources, true));
+		// SimpleSAML_Logger::debug("Resources - ".var_export($resources, true));
 
 		// if (is_null($resources)) {
 		// 	throw new SimpleSAML_Error_Exception("Service with spEntityId: ". $spEntityId ." hasn't assigned any resource.");
@@ -261,7 +261,7 @@ class sspmod_perun_AdapterLdap extends sspmod_perun_Adapter
 			array_push($resultGroups, new sspmod_perun_model_Group($group['perunGroupId'][0], $group['perunVoId'][0], $group['cn'][0], str_replace(':members', '', $group['perunUniqueGroupName'][0]), $group['description'][0]));
 		}
 		$resultGroups = $this->removeDuplicateEntities($resultGroups);
-		SimpleSAML\Logger::debug("Groups - ".var_export($resultGroups, true));
+		SimpleSAML_Logger::debug("Groups - ".var_export($resultGroups, true));
 		return $resultGroups;
 	}
 

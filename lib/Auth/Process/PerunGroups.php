@@ -68,7 +68,7 @@ class sspmod_perun_Auth_Process_PerunGroups extends SimpleSAML_Auth_ProcessingFi
 			// 	"missing mandatory field 'perun.groups' in request." .
 			// 	"Hint: Did you configured PerunIdentity filter before this filter?"
 			// );
-			SimpleSAML\Logger::debug("perun:PerunGroups: 'perun.groups' attribute has NOT been found in request. Continuing to next Auth Filter...");
+			SimpleSAML_Logger::debug("perun:PerunGroups: 'perun.groups' attribute has NOT been found in request. Continuing to next Auth Filter...");
 			return;
 		}
 
@@ -107,14 +107,14 @@ class sspmod_perun_Auth_Process_PerunGroups extends SimpleSAML_Auth_ProcessingFi
 	 */
 	protected function mapGroupName($request, $groupName) {
 		if (isset($request["SPMetadata"]["groupMapping"]) && isset($request["SPMetadata"]["groupMapping"][$groupName])) {
-			SimpleSAML\Logger::debug("Mapping $groupName to " . $request["SPMetadata"]["groupMapping"][$groupName] . " for SP " . $request["SPMetadata"]["entityid"]);
+			SimpleSAML_Logger::debug("Mapping $groupName to " . $request["SPMetadata"]["groupMapping"][$groupName] . " for SP " . $request["SPMetadata"]["entityid"]);
 			return $request["SPMetadata"]["groupMapping"][$groupName];
 		} else if (isset($request["SPMetadata"][self::GROUPNAMEPREFIX_ATTR])) {
-			SimpleSAML\Logger::debug("GroupNamePrefix overridden by a SP " . $request["SPMetadata"]["entityid"] . " to " . $request["SPMetadata"][self::GROUPNAMEPREFIX_ATTR]);
+			SimpleSAML_Logger::debug("GroupNamePrefix overridden by a SP " . $request["SPMetadata"]["entityid"] . " to " . $request["SPMetadata"][self::GROUPNAMEPREFIX_ATTR]);
 			return $request["SPMetadata"][self::GROUPNAMEPREFIX_ATTR] . $groupName;
 		} else {
 			# No mapping defined, so just put groupNamePrefix in front of the group
-			SimpleSAML\Logger::debug("No mapping found for group $groupName for SP " . $request["SPMetadata"]["entityid"]);
+			SimpleSAML_Logger::debug("No mapping found for group $groupName for SP " . $request["SPMetadata"]["entityid"]);
 			return $this->groupNamePrefix . $groupName . $this->groupNameSuffix;
 		}
 	}

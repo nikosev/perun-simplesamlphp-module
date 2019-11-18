@@ -53,7 +53,7 @@ class sspmod_perun_Auth_Process_PerunAttributes extends SimpleSAML_Auth_Processi
 			// 		"missing mandatory field 'perun.user' in request." .
 			// 		"Hint: Have you configured PerunIdentity filter before this filter?"
 			// );
-			SimpleSAML\Logger::debug("perun:PerunAttributes: 'perun.user' attribute has NOT been found in request. Continuing to next Auth Filter...");
+			SimpleSAML_Logger::debug("perun:PerunAttributes: 'perun.user' attribute has NOT been found in request. Continuing to next Auth Filter...");
 			return;
 		}
 
@@ -89,7 +89,7 @@ class sspmod_perun_Auth_Process_PerunAttributes extends SimpleSAML_Auth_Processi
 						"Attribute \$attrName, Supported types: string, array.");
 			}
 
-			SimpleSAML\Logger::debug("perun:PerunAttributes: perun attribute $attrName was fetched. " .
+			SimpleSAML_Logger::debug("perun:PerunAttributes: perun attribute $attrName was fetched. " .
 					"Value " . implode(",", $value) . " is being set to ssp attribute " . implode(",", $attrArray));
 
 			// write $value to all SP attributes

@@ -5,7 +5,7 @@
  * @author Dominik Baránek <0Baranek.dominik0@gmail.com>
  */
 $this->data['header'] = '';
-$this->data['head'] = '<link rel="stylesheet"  media="screen" type="text/css" href="' . SimpleSAML\Module::getModuleUrl('perun/res/css/listOfSps.css')  . '" />';
+$this->data['head'] = '<link rel="stylesheet"  media="screen" type="text/css" href="' . SimpleSAML_Module::getModuleUrl('perun/res/css/listOfSps.css')  . '" />';
 $this->includeAtTemplateBase('includes/header.php');
 
 $statistics = $this->data['statistics'];

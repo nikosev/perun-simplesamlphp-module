@@ -1,6 +1,6 @@
 <?php
 
-use SimpleSAML\Module\perun\StatusConnector;
+use SimpleSAML_Module\perun\StatusConnector;
 
 const OK = "OK";
 const WARNING = "WARNING";
