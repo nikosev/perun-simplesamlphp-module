@@ -87,14 +87,10 @@ class sspmod_perun_Auth_Process_PerunGroups extends SimpleSAML_Auth_ProcessingFi
 
 				$groupName = $this->groupNamePrefix . implode(":", array_map("rawurlencode", explode(":", $group->getUniqueName()))) .  '#' . $this->groupNameAuthority;
 			} else {
-				$roles = array("member", "vm_operator");
-				foreach ($roles as $role) {
-					$voName = urlencode($group->getUniqueName()) . ":role=" . $role;
-					$groupName = $this->mapGroupName($request, $voName);
-					if (!in_array($groupName, $request['Attributes'][$this->attrName], true)) {
-						array_push($request['Attributes'][$this->attrName], $groupName);
-					}
-				}
+				$groupName = $this->mapGroupName($request, $group->getUniqueName());
+			}
+			if (!in_array($groupName, $request['Attributes'][$this->attrName], true)) {
+				array_push($request['Attributes'][$this->attrName], $groupName);
 			}
 		}
 	}

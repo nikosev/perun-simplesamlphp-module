@@ -171,7 +171,7 @@ abstract class sspmod_perun_Adapter
 		$removed = array();
 		$ids = array();
 		foreach ($entities as $entity) {
-			if (!in_array($entity->getId(), $ids)) {
+			if (empty($entity->getId()) || !in_array($entity->getId(), $ids)) {
 				array_push($ids, $entity->getId());
 				array_push($removed, $entity);
 			}

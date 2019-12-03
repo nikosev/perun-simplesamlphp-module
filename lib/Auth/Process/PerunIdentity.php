@@ -182,7 +182,22 @@ class sspmod_perun_Auth_Process_PerunIdentity extends SimpleSAML_Auth_Processing
 
 		//$this->checkMemberStateDefaultVo($request, $user, $uids);
 
-		$groups = $this->adapter->getUsersGroupsOnFacility($this->spEntityId,$user->getId());
+		// getUsersGroupsOnFacility() returns all the groups in which a given user has a valid membership.
+		// However a VO can be mapped to the sspmod_perun_model_Group object and the name of the VO is empty.
+		// The following code block gets the VO name based on the voId of the group, 
+		// and then fills all the attributes of the Group object
+		$tempGroups = $this->adapter->getUsersGroupsOnFacility($this->spEntityId, $user->getId());
+		$groups = array();
+		foreach ($tempGroups as $group) {
+			if (is_null($group->getId())) {
+				$vo = $this->adapter->getVoById($group->getVoId());
+				if (!empty($vo)) {
+					array_push($groups, new sspmod_perun_model_Group($group->getVoId(), $group->getVoId(), $vo->getShortName(), $vo->getShortName(), $group->getDescription()));
+				}
+			} else {
+				array_push($groups, $group);
+			}
+		}
 
 		// if ($this->checkGroupMembership && (is_null($groups) || empty($groups))) {
 		// 	if ($this->allowRegistrationToGroups) {
