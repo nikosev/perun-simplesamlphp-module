@@ -12,3 +12,11 @@ Once you have installed SimpleSAMLphp, installing this module is very simple. Fi
 ## Instalation
 
 `php composer.phar require cesnet/simplesamlphp-module-perun:dev-master`
+
+## Compatibility matrix
+
+This table matches the module version with the supported SimpleSAMLphp version.
+
+| Module    |  SimpleSAMLphp |
+|:---------:|:--------------:|
+| rciam-2.2 | v1.14          |
