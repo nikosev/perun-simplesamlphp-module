@@ -59,7 +59,7 @@ class sspmod_perun_NagiosStatusConnector extends sspmod_perun_StatusConnector
         $response = curl_exec($ch);
 
         if ($response === false) {
-            \SimpleSAML\Logger::error(curl_error($ch));
+            \SimpleSAML_Logger::error(curl_error($ch));
         }
 
         curl_close($ch);

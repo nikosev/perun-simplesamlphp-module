@@ -9,7 +9,7 @@
  * @var sspmod_perun_model_Vo $vo
  */
 
-$this->data['head'] = '<link rel="stylesheet" media="screen" type="text/css" href="' . SimpleSAML\Module::getModuleUrl('perun/res/css/perun_identity_choose_vo_and_group.css')  . '" />';
+$this->data['head'] = '<link rel="stylesheet" media="screen" type="text/css" href="' . SimpleSAML_Module::getModuleUrl('perun/res/css/perun_identity_choose_vo_and_group.css')  . '" />';
 
 $vos = $this->data['vos'];
 $groups = $this->data['groups'];
@@ -35,7 +35,7 @@ if (isset($_POST['selectedGroup'])) {
 	$params = array();
 	$vo = explode(':', $_POST['selectedGroup'],2)[0];
     $group = explode(':', $_POST['selectedGroup'],2)[1];
-	$callback = SimpleSAML\Module::getModuleURL('perun/perun_identity_callback.php', array('stateId' => $stateId));
+	$callback = SimpleSAML_Module::getModuleURL('perun/perun_identity_callback.php', array('stateId' => $stateId));
 
 	$params['vo'] = $vo;
 

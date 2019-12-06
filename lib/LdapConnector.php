@@ -48,7 +48,7 @@ class sspmod_perun_LdapConnector
 		$entries = self::search($base, $filter, $attrNames);
 
 		if (empty($entries)) {
-			SimpleSAML\Logger::debug("sspmod_perun_LdapConnector.searchForEntity - No entity found. Returning 'null'. ".
+			SimpleSAML_Logger::debug("sspmod_perun_LdapConnector.searchForEntity - No entity found. Returning 'null'. ".
 				"query base: $base, filter: $filter");
 			return null;
 		}
@@ -72,7 +72,7 @@ class sspmod_perun_LdapConnector
 		$entries = self::search($base, $filter, $attrNames);
 
 		if (empty($entries)) {
-			SimpleSAML\Logger::debug("sspmod_perun_LdapConnector.searchForEntity - No entities found. Returning empty array. ".
+			SimpleSAML_Logger::debug("sspmod_perun_LdapConnector.searchForEntity - No entities found. Returning empty array. ".
 				"query base: $base, filter: $filter");
 			return $entries;
 		}
@@ -94,7 +94,7 @@ class sspmod_perun_LdapConnector
 			throw new SimpleSAML_Error_Exception('Unable to connect to the Perun LDAP, '.$this->hostname);
 		}
 
-		SimpleSAML\Logger::debug("sspmod_perun_LdapConnector.search - Connection to Perun LDAP established. ".
+		SimpleSAML_Logger::debug("sspmod_perun_LdapConnector.search - Connection to Perun LDAP established. ".
 			"Ready to perform search query. host: $this->hostname, user: $this->user");
 
 		$result = ldap_search($conn, $base, $filter, $attributes);
@@ -108,7 +108,7 @@ class sspmod_perun_LdapConnector
 
 		ldap_close($conn);
 
-		SimpleSAML\Logger::debug("sspmod_perun_LdapConnector.search - search query proceeded. ".
+		SimpleSAML_Logger::debug("sspmod_perun_LdapConnector.search - search query proceeded. ".
 			"query base: $base, filter: $filter, response: " . var_export($entries, true));
 
 		return $entries;

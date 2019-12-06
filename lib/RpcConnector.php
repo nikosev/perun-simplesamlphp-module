@@ -55,7 +55,7 @@ class sspmod_perun_RpcConnector
 		$json = curl_exec($ch);
 		curl_close($ch);
 
-		SimpleSAML\Logger::debug("perun.RPC: GET call $uri with params: " . $paramsQuery . ", response: " . $json);
+		SimpleSAML_Logger::debug("perun.RPC: GET call $uri with params: " . $paramsQuery . ", response: " . $json);
 
 		$result = json_decode($json, true);
 
@@ -89,7 +89,7 @@ class sspmod_perun_RpcConnector
 		$json = curl_exec($ch);
 		curl_close($ch);
 
-		SimpleSAML\Logger::debug("perun.RPC: POST call $uri with params: " . $paramsJson . ", response: " . $json);
+		SimpleSAML_Logger::debug("perun.RPC: POST call $uri with params: " . $paramsJson . ", response: " . $json);
 
 		$result = json_decode($json, true);
 

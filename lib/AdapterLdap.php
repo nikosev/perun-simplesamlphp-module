@@ -235,21 +235,22 @@ class sspmod_perun_AdapterLdap extends sspmod_perun_Adapter
 
 	public function getUsersGroupsOnFacility($spEntityId, $userId)
 	{
-		$resources = $this->connector->searchForEntities($this->ldapBase,
-			"(&(objectClass=perunResource)(entityID=$spEntityId))",
-			array("perunResourceId")
-		);
-		SimpleSAML\Logger::debug("Resources - ".var_export($resources, true));
+		// $resources = $this->connector->searchForEntities($this->ldapBase,
+		// 	"(&(objectClass=perunResource)(entityID=$spEntityId))",
+		// 	array("perunResourceId")
+		// );
+		// SimpleSAML_Logger::debug("Resources - ".var_export($resources, true));
 
-		if (is_null($resources)) {
-			throw new SimpleSAML_Error_Exception("Service with spEntityId: ". $spEntityId ." hasn't assigned any resource.");
-		}
-		$resourcesString = "(|";
-		foreach ($resources as $resource){
-			$resourcesString .= "(assignedToResourceId=".$resource['perunResourceId'][0].")";
-		}
-		$resourcesString .= ")";
-
+		// if (is_null($resources)) {
+		// 	throw new SimpleSAML_Error_Exception("Service with spEntityId: ". $spEntityId ." hasn't assigned any resource.");
+		// }
+		// TODO
+		// $resourcesString = "(|";
+		// foreach ($resources as $resource){
+		// 	$resourcesString .= "(assignedToResourceId=".$resource['perunResourceId'][0].")";
+		// }
+		// $resourcesString .= ")";
+		$resourcesString = "";
 		$resultGroups = array();
 		$groups = $this->connector->searchForEntities($this->ldapBase,
 			"(&(uniqueMember=perunUserId=".$userId.", ou=People," . $this->ldapBase. ")".$resourcesString.")",
@@ -260,7 +261,7 @@ class sspmod_perun_AdapterLdap extends sspmod_perun_Adapter
 			array_push($resultGroups, new sspmod_perun_model_Group($group['perunGroupId'][0], $group['perunVoId'][0], $group['cn'][0], $group['perunUniqueGroupName'][0], $group['description'][0]));
 		}
 		$resultGroups = $this->removeDuplicateEntities($resultGroups);
-		SimpleSAML\Logger::debug("Groups - ".var_export($resultGroups, true));
+		SimpleSAML_Logger::debug("Groups - ".var_export($resultGroups, true));
 		return $resultGroups;
 	}
 

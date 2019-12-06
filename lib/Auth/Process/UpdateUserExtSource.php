@@ -83,7 +83,7 @@ class sspmod_perun_Auth_Process_UpdateUserExtSource extends SimpleSAML_Auth_Proc
 			}
 			$this->adapter->updateUserExtSourceLastAccess($userExtSource['id']);
 		} catch (Exception $ex) {
-			SimpleSAML\Logger::warning("sspmod_perun_Auth_Process_UpdateUserExtSource: update was not successful: " . $ex->getMessage() . " Skip to next filter.");
+			SimpleSAML_Logger::warning("sspmod_perun_Auth_Process_UpdateUserExtSource: update was not successful: " . $ex->getMessage() . " Skip to next filter.");
 		}
 	}
 }

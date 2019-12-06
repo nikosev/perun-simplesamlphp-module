@@ -21,11 +21,13 @@ class sspmod_perun_Auth_Process_PerunGroups extends SimpleSAML_Auth_ProcessingFi
 	const CONFIG_FILE_NAME = 'module_perun.php';
 
 	const GROUPNAMEPREFIX_ATTR = 'groupNamePrefix';
+	const GROUPNAMESUFFIX_ATTR = 'groupNameSuffix';
 	const GROUPNAMEAARC_ATTR = 'groupNameAARC';
 	const GROUPNAMEAUTHORITY_ATTR = 'groupNameAuthority';
 
 	private $attrName;
 	private $groupNamePrefix;
+	private $groupNameSuffix;
 	private $groupNameAARC;
 	private $groupNameAuthority;
 
@@ -36,6 +38,7 @@ class sspmod_perun_Auth_Process_PerunGroups extends SimpleSAML_Auth_ProcessingFi
 		$conf = SimpleSAML_Configuration::getConfig(self::CONFIG_FILE_NAME);
 
 		$this->groupNamePrefix = $conf->getString(self::GROUPNAMEPREFIX_ATTR, '');
+		$this->groupNameSuffix = $conf->getString(self::GROUPNAMESUFFIX_ATTR, '');
 		$this->groupNameAuthority = $conf->getString(self::GROUPNAMEAUTHORITY_ATTR, '');
 		$this->groupNameAARC = $conf->getBoolean(self::GROUPNAMEAARC_ATTR, false);
 
@@ -61,14 +64,19 @@ class sspmod_perun_Auth_Process_PerunGroups extends SimpleSAML_Auth_ProcessingFi
 			 */
 			$groups = $request['perun']['groups'];
 		} else {
-			throw new SimpleSAML_Error_Exception("perun:PerunGroups: " .
-				"missing mandatory field 'perun.groups' in request." .
-				"Hint: Did you configured PerunIdentity filter before this filter?"
-			);
+			// throw new SimpleSAML_Error_Exception("perun:PerunGroups: " .
+			// 	"missing mandatory field 'perun.groups' in request." .
+			// 	"Hint: Did you configured PerunIdentity filter before this filter?"
+			// );
+			SimpleSAML_Logger::debug("perun:PerunGroups: 'perun.groups' attribute has NOT been found in request. Continuing to next Auth Filter...");
+			return;
 		}
 
-		$request['Attributes'][$this->attrName] = array();
+		// $request['Attributes'][$this->attrName] = array();
 		foreach ($groups as $group) {
+			if (empty($group->getUniqueName())) {
+				continue;
+			}
 			if (isset($request["SPMetadata"]["groupNameAARC"]) || $this->groupNameAARC) {
 				# https://aarc-project.eu/wp-content/uploads/2017/11/AARC-JRA1.4A-201710.pdf
 				# Group name is URL encoded by RFC 3986 (http://www.ietf.org/rfc/rfc3986.txt)
@@ -81,7 +89,9 @@ class sspmod_perun_Auth_Process_PerunGroups extends SimpleSAML_Auth_ProcessingFi
 			} else {
 				$groupName = $this->mapGroupName($request, $group->getUniqueName());
 			}
-			array_push($request['Attributes'][$this->attrName], $groupName);
+			if (!in_array($groupName, $request['Attributes'][$this->attrName], true)) {
+				array_push($request['Attributes'][$this->attrName], $groupName);
+			}
 		}
 	}
 
@@ -93,15 +103,15 @@ class sspmod_perun_Auth_Process_PerunGroups extends SimpleSAML_Auth_ProcessingFi
 	 */
 	protected function mapGroupName($request, $groupName) {
 		if (isset($request["SPMetadata"]["groupMapping"]) && isset($request["SPMetadata"]["groupMapping"][$groupName])) {
-			SimpleSAML\Logger::debug("Mapping $groupName to " . $request["SPMetadata"]["groupMapping"][$groupName] . " for SP " . $request["SPMetadata"]["entityid"]);
+			SimpleSAML_Logger::debug("Mapping $groupName to " . $request["SPMetadata"]["groupMapping"][$groupName] . " for SP " . $request["SPMetadata"]["entityid"]);
 			return $request["SPMetadata"]["groupMapping"][$groupName];
 		} else if (isset($request["SPMetadata"][self::GROUPNAMEPREFIX_ATTR])) {
-			SimpleSAML\Logger::debug("GroupNamePrefix overridden by a SP " . $request["SPMetadata"]["entityid"] . " to " . $request["SPMetadata"][self::GROUPNAMEPREFIX_ATTR]);
+			SimpleSAML_Logger::debug("GroupNamePrefix overridden by a SP " . $request["SPMetadata"]["entityid"] . " to " . $request["SPMetadata"][self::GROUPNAMEPREFIX_ATTR]);
 			return $request["SPMetadata"][self::GROUPNAMEPREFIX_ATTR] . $groupName;
 		} else {
 			# No mapping defined, so just put groupNamePrefix in front of the group
-			SimpleSAML\Logger::debug("No mapping found for group $groupName for SP " . $request["SPMetadata"]["entityid"]);
-			return $this->groupNamePrefix . $groupName;
+			SimpleSAML_Logger::debug("No mapping found for group $groupName for SP " . $request["SPMetadata"]["entityid"]);
+			return $this->groupNamePrefix . $groupName . $this->groupNameSuffix;
 		}
 	}
 

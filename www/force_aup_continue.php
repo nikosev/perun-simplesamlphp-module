@@ -16,7 +16,7 @@ try {
 	));
 	$userAups = $userAupsAttr['value'];
 } catch (Exception $exception) {
-	SimpleSAML\Logger::error('Perun.ForceAup - Error during get userAupsAttr from Perun');
+	SimpleSAML_Logger::error('Perun.ForceAup - Error during get userAupsAttr from Perun');
 }
 
 foreach ($state['newAups'] as $key=>$newAup) {
@@ -40,10 +40,10 @@ try {
 		'attribute' => $userAupsAttr,
 	));
 
-	SimpleSAML\Logger::info('Perun.ForceAup - User accepted usage policy');
+	SimpleSAML_Logger::info('Perun.ForceAup - User accepted usage policy');
 
 } catch (Exception $exception) {
-	SimpleSAML\Logger::error('Perun.ForceAup - Error during post data to Perun');
+	SimpleSAML_Logger::error('Perun.ForceAup - Error during post data to Perun');
 }
 
 SimpleSAML_Auth_ProcessingChain::resumeProcessing($state);
