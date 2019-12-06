@@ -1,12 +1,12 @@
 # Change Log
 All notable changes to this project will be documented in this file.
  
- ## [Unreleased]
+ ## [rciam-2.2.0] - 2019-12-06
  [Changed]
  - Rename SimpleSAML library calls to make the module compatible with SimpleSAMLphp v1.14
 
  [Removed]
- - Disable registration for users who are not found in LDAP server
+ - Disable registration for users who are not found in Perun
  
  ## [v2.2.0]
  [Added]
