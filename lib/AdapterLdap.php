@@ -258,7 +258,16 @@ class sspmod_perun_AdapterLdap extends sspmod_perun_Adapter
 		);
 
 		foreach ($groups as $group) {
-			array_push($resultGroups, new sspmod_perun_model_Group($group['perunGroupId'][0], $group['perunVoId'][0], $group['cn'][0], $group['perunUniqueGroupName'][0], $group['description'][0]));
+			array_push(
+				$resultGroups,
+				new sspmod_perun_model_Group(
+					(empty($group['perunGroupId'][0]) ? "" : $group['perunGroupId'][0]),
+					(empty($group['perunVoId'][0]) ? "" : $group['perunVoId'][0]),
+					(empty($group['cn'][0]) ? "" : $group['cn'][0]),
+					(empty($group['perunUniqueGroupName'][0]) ? "" : $group['perunUniqueGroupName'][0]),
+					(empty($group['description'][0]) ? "" : $group['description'][0])
+				)
+			);
 		}
 		$resultGroups = $this->removeDuplicateEntities($resultGroups);
 		SimpleSAML_Logger::debug("Groups - ".var_export($resultGroups, true));

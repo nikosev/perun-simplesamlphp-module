@@ -1,5 +1,9 @@
 # Change Log
 All notable changes to this project will be documented in this file.
+
+ ## [Unreleased]
+ [Fixed]
+ - Fix undefined index when quering groups in LDAP
  
  ## [rciam-2.2.0] - 2019-12-06
  [Changed]

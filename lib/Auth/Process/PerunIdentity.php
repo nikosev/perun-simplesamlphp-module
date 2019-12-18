@@ -189,7 +189,7 @@ class sspmod_perun_Auth_Process_PerunIdentity extends SimpleSAML_Auth_Processing
 		$tempGroups = $this->adapter->getUsersGroupsOnFacility($this->spEntityId, $user->getId());
 		$groups = array();
 		foreach ($tempGroups as $group) {
-			if (is_null($group->getId())) {
+			if (empty($group->getId())) {
 				$vo = $this->adapter->getVoById($group->getVoId());
 				if (!empty($vo)) {
 					array_push($groups, new sspmod_perun_model_Group($group->getVoId(), $group->getVoId(), $vo->getShortName(), $vo->getShortName(), $group->getDescription()));
