@@ -77,17 +77,9 @@ class sspmod_perun_Auth_Process_PerunGroups extends SimpleSAML_Auth_ProcessingFi
 			if (empty($group->getUniqueName())) {
 				continue;
 			}
-			if (isset($request["SPMetadata"]["groupNameAARC"]) || $this->groupNameAARC) {
-				# https://aarc-project.eu/wp-content/uploads/2017/11/AARC-JRA1.4A-201710.pdf
-				# Group name is URL encoded by RFC 3986 (http://www.ietf.org/rfc/rfc3986.txt)
-				# Example: urn:geant:einfra.cesnet.cz:perun.cesnet.cz:group:einfra:<groupName>:<subGroupName>#perun.cesnet.cz
-				if (empty($this->groupNameAuthority) || empty($this->groupNamePrefix)) {
-					throw new SimpleSAML_Error_Exception("perun:PerunGroups: missing mandatory configuration options 'groupNameAuthority' or 'groupNamePrefix'.");
-				}
-
-				$groupName = $this->groupNamePrefix . implode(":", array_map("rawurlencode", explode(":", $group->getUniqueName()))) .  '#' . $this->groupNameAuthority;
-			} else {
-				$groupName = $this->mapGroupName($request, $group->getUniqueName());
+			$groupName = $this->mapGroupName($request, $group->getUniqueName());
+			if (empty($request['Attributes'][$this->attrName])) {
+				$request['Attributes'][$this->attrName] = array();
 			}
 			if (!in_array($groupName, $request['Attributes'][$this->attrName], true)) {
 				array_push($request['Attributes'][$this->attrName], $groupName);
