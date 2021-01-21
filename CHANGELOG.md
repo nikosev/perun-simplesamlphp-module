@@ -3,6 +3,14 @@ All notable changes to this project will be documented in this file.
  
 ## [Unreleased]
 
+### [Fixed]
+
+- Fix undefined index when quering groups in LDAP
+
+### [Removed]
+
+- Disable registration for users who are not found in Perun
+
 ## [v4.1.1]
 #### Fixed
 - Fixed bad log message in PerunIdentity in mode USERONLY

@@ -217,7 +217,7 @@ abstract class Adapter
         $removed = [];
         $ids = [];
         foreach ($entities as $entity) {
-            if (!in_array($entity->getId(), $ids)) {
+            if (empty($entity->getId()) || !in_array($entity->getId(), $ids)) {
                 array_push($ids, $entity->getId());
                 array_push($removed, $entity);
             }

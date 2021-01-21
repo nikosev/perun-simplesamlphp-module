@@ -374,31 +374,32 @@ class AdapterLdap extends Adapter
 
     public function getUsersGroupsOnFacility($spEntityId, $userId)
     {
-        $facility = $this->getFacilityByEntityId($spEntityId);
+        // $facility = $this->getFacilityByEntityId($spEntityId);
 
-        if ($facility === null) {
-            return [];
-        }
+        // if ($facility === null) {
+        //     return [];
+        // }
 
-        $id = $facility->getId();
+        // $id = $facility->getId();
 
-        $resources = $this->connector->searchForEntities(
-            $this->ldapBase,
-            '(&(objectClass=perunResource)(perunFacilityDn=perunFacilityId=' . $id . ',' . $this->ldapBase . '))',
-            ['perunResourceId']
-        );
-        Logger::debug('Resources - ' . var_export($resources, true));
+        // $resources = $this->connector->searchForEntities(
+        //     $this->ldapBase,
+        //     '(&(objectClass=perunResource)(perunFacilityDn=perunFacilityId=' . $id . ',' . $this->ldapBase . '))',
+        //     ['perunResourceId']
+        // );
+        // Logger::debug('Resources - ' . var_export($resources, true));
 
-        if ($resources === null) {
-            throw new Exception(
-                'Service with spEntityId: ' . $spEntityId . ' hasn\'t assigned any resource.'
-            );
-        }
-        $resourcesString = '(|';
-        foreach ($resources as $resource) {
-            $resourcesString .= '(assignedToResourceId=' . $resource['perunResourceId'][0] . ')';
-        }
-        $resourcesString .= ')';
+        // if ($resources === null) {
+        //     throw new Exception(
+        //         'Service with spEntityId: ' . $spEntityId . ' hasn\'t assigned any resource.'
+        //     );
+        // }
+        // $resourcesString = '(|';
+        // foreach ($resources as $resource) {
+        //     $resourcesString .= '(assignedToResourceId=' . $resource['perunResourceId'][0] . ')';
+        // }
+        // $resourcesString .= ')';
+        $resourcesString = '';
 
         $resultGroups = [];
         $groups = $this->connector->searchForEntities(
@@ -411,11 +412,11 @@ class AdapterLdap extends Adapter
             array_push(
                 $resultGroups,
                 new Group(
-                    $group['perunGroupId'][0],
-                    $group['perunVoId'][0],
-                    $group['cn'][0],
-                    $group['perunUniqueGroupName'][0],
-                    $group['description'][0] ?? ''
+                    (empty($group['perunGroupId'][0]) ? "" : $group['perunGroupId'][0]),
+                    (empty($group['perunVoId'][0]) ? "" : $group['perunVoId'][0]),
+                    (empty($group['cn'][0]) ? "" : $group['cn'][0]),
+                    (empty($group['perunUniqueGroupName'][0]) ? "" : $group['perunUniqueGroupName'][0]),
+                    (empty($group['description'][0]) ? "" : $group['description'][0])
                 )
             );
         }

@@ -100,8 +100,8 @@ class PerunIdentity extends \SimpleSAML\Auth\ProcessingFilter
 
         $this->uidsAttr = $config->getArray(self::UIDS_ATTR, []);
         $this->registerUrlBase = $config->getString(self::REGISTER_URL_BASE, null);
-        $this->defaultRegisterUrl = $config->getString(self::REGISTER_URL, null);
-        $this->voShortName = $config->getString(self::VO_SHORTNAME, null);
+        // $this->defaultRegisterUrl = $config->getString(self::REGISTER_URL, null);
+        // $this->voShortName = $config->getString(self::VO_SHORTNAME, null);
         $this->interface = $config->getString(self::INTERFACE_PROPNAME, AdapterRpc::RPC);
         $this->sourceIdPEntityIDAttr =
             $config->getString(self::SOURCE_IDP_ENTITY_ID_ATTR, 'sourceIdPEntityID');
@@ -215,34 +215,56 @@ class PerunIdentity extends \SimpleSAML\Auth\ProcessingFilter
         $user = $this->adapter->getPerunUser($idpEntityId, $uids);
 
         if ($this->mode === self::MODE_FULL) {
-            $this->getSPAttributes($this->spEntityId);
+            // $this->getSPAttributes($this->spEntityId);
 
-            $this->checkMemberStateDefaultVo($request, $user, $uids);
+            // $this->checkMemberStateDefaultVo($request, $user, $uids);
 
             $groups = $this->adapter->getUsersGroupsOnFacility($this->spEntityId, $user->getId());
 
-            if ($this->checkGroupMembership && empty($groups)) {
-                if ($this->allowRegistrationToGroups) {
-                    $vosForRegistration = $this->getVosForRegistration($user);
-
-                    if (empty($vosForRegistration)) {
-                        Logger::warning(
-                            'Perun user with name: ' . $user->getName() . ' ' .
-                            'is not valid member of any assigned VO for SP with entityId: (' .
-                            $this->spEntityId . ') and there are no VO for registration.'
+            $tempGroups = $this->adapter->getUsersGroupsOnFacility($this->spEntityId, $user->getId());
+            $groups = array();
+            foreach ($tempGroups as $group) {
+                if (empty($group->getId())) {
+                    $vo = $this->adapter->getVoById($group->getVoId());
+                    if (!empty($vo)) {
+                        array_push(
+                            $groups,
+                            new Group(
+                                $group->getVoId(),
+                                $group->getVoId(),
+                                $vo->getShortName(),
+                                $vo->getShortName(),
+                                $group->getDescription()
+                            )
                         );
-                        $this->unauthorized($request);
                     }
-                    $this->register($request, $vosForRegistration);
                 } else {
-                    Logger::warning(
-                        'Perun user with identity/ies: ' . implode(',', $uids) .
-                        ' is not member of any assigned group for resource (' . $this->spEntityId .
-                        ') and registration to groups is disabled.'
-                    );
-                    $this->unauthorized($request);
+                    array_push($groups, $group);
                 }
             }
+
+            // if ($this->checkGroupMembership && empty($groups)) {
+            //     if ($this->allowRegistrationToGroups) {
+            //         $vosForRegistration = $this->getVosForRegistration($user);
+
+            //         if (empty($vosForRegistration)) {
+            //             Logger::warning(
+            //                 'Perun user with name: ' . $user->getName() . ' ' .
+            //                 'is not valid member of any assigned VO for SP with entityId: (' .
+            //                 $this->spEntityId . ') and there are no VO for registration.'
+            //             );
+            //             $this->unauthorized($request);
+            //         }
+            //         $this->register($request, $vosForRegistration);
+            //     } else {
+            //         Logger::warning(
+            //             'Perun user with identity/ies: ' . implode(',', $uids) .
+            //             ' is not member of any assigned group for resource (' . $this->spEntityId .
+            //             ') and registration to groups is disabled.'
+            //         );
+            //         $this->unauthorized($request);
+            //     }
+            // }
 
             Logger::info(
                 'Perun user with identity/ies: ' . implode(',', $uids) .

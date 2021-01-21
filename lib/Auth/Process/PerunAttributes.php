@@ -68,10 +68,14 @@ class PerunAttributes extends \SimpleSAML\Auth\ProcessingFilter
         if (isset($request['perun']['user'])) {
             $user = $request['perun']['user'];
         } else {
-            throw new Exception(
-                'perun:PerunAttributes: ' .
-                'missing mandatory field \'perun.user\' in request.' .
-                'Hint: Did you configured PerunIdentity filter before this filter?'
+            // throw new Exception(
+            //     'perun:PerunAttributes: ' .
+            //     'missing mandatory field \'perun.user\' in request.' .
+            //     'Hint: Did you configured PerunIdentity filter before this filter?'
+            // );
+            Logger::debug(
+                "perun:PerunAttributes: 'perun.user' attribute has NOT been found in request. " .
+                "Continuing to next Auth Filter..."
             );
         }
 
@@ -133,7 +137,7 @@ class PerunAttributes extends \SimpleSAML\Auth\ProcessingFilter
 
             // write $value to all SP attributes
             foreach ($attrArray as $attribute) {
-                $request['Attributes'][$attribute] = $value;
+                $request['Attributes'][$attribute] = array_merge($request['Attributes'][$attribute], $value);
             }
         }
     }
