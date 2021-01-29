@@ -3,6 +3,10 @@ All notable changes to this project will be documented in this file.
  
 ## [Unreleased]
 
+### [Added]
+
+- Add custom attribute mapping
+
 ### [Fixed]
 
 - Fix undefined index when quering groups in LDAP
