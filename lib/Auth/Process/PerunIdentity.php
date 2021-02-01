@@ -124,51 +124,51 @@ class PerunIdentity extends \SimpleSAML\Auth\ProcessingFilter
                 'perun:PerunIdentity: missing mandatory config option \'' . self::UIDS_ATTR . '\'.'
             );
         }
-        if ($this->mode === self::MODE_FULL && empty($this->registerUrlBase)) {
-            throw new Exception(
-                'perun:PerunIdentity: missing mandatory config option \'' . self::REGISTER_URL_BASE . '\'.'
-            );
-        }
-        if ($this->mode === self::MODE_FULL && empty($this->defaultRegisterUrl)) {
-            throw new Exception(
-                'perun:PerunIdentity: missing mandatory config option \'' . self::REGISTER_URL . '\'.'
-            );
-        }
-        if ($this->mode === self::MODE_FULL && empty($this->voShortName)) {
-            throw new Exception(
-                'perun:PerunIdentity: missing mandatory config option \'' . self::VO_SHORTNAME . '\'.'
-            );
-        }
-        if ($this->mode === self::MODE_FULL && empty($this->facilityCheckGroupMembershipAttr)) {
-            throw new Exception(
-                'perun:PerunIdentity: missing mandatory config option \'' .
-                self::PERUN_FACILITY_CHECK_GROUP_MEMBERSHIP_ATTR . '\'.'
-            );
-        }
-        if ($this->mode === self::MODE_FULL && empty($this->facilityDynamicRegistrationAttr)) {
-            throw new Exception(
-                'perun:PerunIdentity: missing mandatory config option \'' .
-                self::PERUN_FACILITY_DYNAMIC_REGISTRATION_ATTR . '\'.'
-            );
-        }
-        if ($this->mode === self::MODE_FULL && empty($this->facilityVoShortNamesAttr)) {
-            throw new Exception(
-                'perun:PerunIdentity: missing mandatory config option \'' .
-                self::PERUN_FACILITY_VO_SHORT_NAMES_ATTR . '\'.'
-            );
-        }
-        if ($this->mode === self::MODE_FULL && empty($this->facilityRegisterUrlAttr)) {
-            throw new Exception(
-                'perun:PerunIdentity: missing mandatory config option \'' .
-                self::PERUN_FACILITY_REGISTER_URL_ATTR . '\'.'
-            );
-        }
-        if ($this->mode === self::MODE_FULL && empty($this->facilityAllowRegistrationToGroupsAttr)) {
-            throw new Exception(
-                "perun:PerunIdentity: missing mandatory config option '" .
-                self::PERUN_FACILITY_ALLOW_REGISTRATION_TO_GROUPS . "'."
-            );
-        }
+        // if ($this->mode === self::MODE_FULL && empty($this->registerUrlBase)) {
+        //     throw new Exception(
+        //         'perun:PerunIdentity: missing mandatory config option \'' . self::REGISTER_URL_BASE . '\'.'
+        //     );
+        // }
+        // if ($this->mode === self::MODE_FULL && empty($this->defaultRegisterUrl)) {
+        //     throw new Exception(
+        //         'perun:PerunIdentity: missing mandatory config option \'' . self::REGISTER_URL . '\'.'
+        //     );
+        // }
+        // if ($this->mode === self::MODE_FULL && empty($this->voShortName)) {
+        //     throw new Exception(
+        //         'perun:PerunIdentity: missing mandatory config option \'' . self::VO_SHORTNAME . '\'.'
+        //     );
+        // }
+        // if ($this->mode === self::MODE_FULL && empty($this->facilityCheckGroupMembershipAttr)) {
+        //     throw new Exception(
+        //         'perun:PerunIdentity: missing mandatory config option \'' .
+        //         self::PERUN_FACILITY_CHECK_GROUP_MEMBERSHIP_ATTR . '\'.'
+        //     );
+        // }
+        // if ($this->mode === self::MODE_FULL && empty($this->facilityDynamicRegistrationAttr)) {
+        //     throw new Exception(
+        //         'perun:PerunIdentity: missing mandatory config option \'' .
+        //         self::PERUN_FACILITY_DYNAMIC_REGISTRATION_ATTR . '\'.'
+        //     );
+        // }
+        // if ($this->mode === self::MODE_FULL && empty($this->facilityVoShortNamesAttr)) {
+        //     throw new Exception(
+        //         'perun:PerunIdentity: missing mandatory config option \'' .
+        //         self::PERUN_FACILITY_VO_SHORT_NAMES_ATTR . '\'.'
+        //     );
+        // }
+        // if ($this->mode === self::MODE_FULL && empty($this->facilityRegisterUrlAttr)) {
+        //     throw new Exception(
+        //         'perun:PerunIdentity: missing mandatory config option \'' .
+        //         self::PERUN_FACILITY_REGISTER_URL_ATTR . '\'.'
+        //     );
+        // }
+        // if ($this->mode === self::MODE_FULL && empty($this->facilityAllowRegistrationToGroupsAttr)) {
+        //     throw new Exception(
+        //         "perun:PerunIdentity: missing mandatory config option '" .
+        //         self::PERUN_FACILITY_ALLOW_REGISTRATION_TO_GROUPS . "'."
+        //     );
+        // }
 
         $this->adapter = Adapter::getInstance($this->interface);
         $this->rpcAdapter = new AdapterRpc();

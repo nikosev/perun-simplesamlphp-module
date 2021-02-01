@@ -14,6 +14,7 @@ All notable changes to this project will be documented in this file.
 ### [Removed]
 
 - Disable registration for users who are not found in Perun
+- Remove exceptions for unused config options
 
 ## [v4.1.1]
 #### Fixed
