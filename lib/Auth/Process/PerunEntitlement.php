@@ -72,27 +72,33 @@ class PerunEntitlement extends ProcessingFilter
     public function process(&$request)
     {
         $eduPersonEntitlement = [];
-        $capabilities = [];
-        $forwardedEduPersonEntitlement = [];
+        // $capabilities = [];
+        // $forwardedEduPersonEntitlement = [];
 
         if (isset($request['perun']['groups'])) {
             $eduPersonEntitlement = $this->getEduPersonEntitlement($request);
-            $capabilities = $this->getCapabilities($request);
+            // $capabilities = $this->getCapabilities($request);
         } else {
+            // Logger::debug(
+            //     'perun:PerunEntitlement: There are no user groups assign to facility.' .
+            //     '=> Skipping getEduPersonEntitlement and getResourceCapabilities'
+            // );
             Logger::debug(
-                'perun:PerunEntitlement: There are no user groups assign to facility.' .
-                '=> Skipping getEduPersonEntitlement and getResourceCapabilities'
+                "perun:PerunGroups: 'perun.groups' attribute has NOT been found in request. " .
+                "Continuing to next Auth Filter..."
             );
+            return;
         }
 
-        if ($this->releaseForwardedEntitlement) {
-            $forwardedEduPersonEntitlement = $this->getForwardedEduPersonEntitlement($request);
-        }
+        // if ($this->releaseForwardedEntitlement) {
+        //     $forwardedEduPersonEntitlement = $this->getForwardedEduPersonEntitlement($request);
+        // }
 
         $request['Attributes'][$this->eduPersonEntitlement] = array_unique(array_merge(
+            $request['Attributes'][$this->eduPersonEntitlement],
             $eduPersonEntitlement,
-            $forwardedEduPersonEntitlement,
-            $capabilities
+            // $forwardedEduPersonEntitlement,
+            // $capabilities
         ));
     }
 
@@ -105,22 +111,28 @@ class PerunEntitlement extends ProcessingFilter
             $groupName = $group->getUniqueName();
             $groupName = preg_replace('/^(\w*)\:members$/', '$1', $groupName);
 
-            if (isset($request['SPMetadata']['groupNameAARC']) || $this->groupNameAARC) {
-                # https://aarc-project.eu/wp-content/uploads/2017/11/AARC-JRA1.4A-201710.pdf
-                # Group name is URL encoded by RFC 3986 (http://www.ietf.org/rfc/rfc3986.txt)
-                # Example:
-                # urn:geant:einfra.cesnet.cz:perun.cesnet.cz:group:einfra:<groupName>:<subGroupName>#perun.cesnet.cz
-                if (empty($this->entitlementAuthority) || empty($this->entitlementPrefix)) {
-                    throw new Exception(
-                        'perun:PerunEntitlement: missing mandatory configuration options ' .
-                        '\'groupNameAuthority\' or \'groupNamePrefix\'.'
-                    );
-                }
-                $groupName = $this->groupNameWrapper($groupName);
-            } else {
-                $groupName = $this->mapGroupName($request, $groupName);
+            // if (isset($request['SPMetadata']['groupNameAARC']) || $this->groupNameAARC) {
+            //     # https://aarc-project.eu/wp-content/uploads/2017/11/AARC-JRA1.4A-201710.pdf
+            //     # Group name is URL encoded by RFC 3986 (http://www.ietf.org/rfc/rfc3986.txt)
+            //     # Example:
+            //     # urn:geant:einfra.cesnet.cz:perun.cesnet.cz:group:einfra:<groupName>:<subGroupName>#perun.cesnet.cz
+            //     if (empty($this->entitlementAuthority) || empty($this->entitlementPrefix)) {
+            //         throw new Exception(
+            //             'perun:PerunEntitlement: missing mandatory configuration options ' .
+            //             '\'groupNameAuthority\' or \'groupNamePrefix\'.'
+            //         );
+            //     }
+            //     $groupName = $this->groupNameWrapper($groupName);
+            // } else {
+            //     $groupName = $this->mapGroupName($request, $groupName);
+            // }
+            $groupName = $this->mapGroupName($request, $groupName);
+            if (empty($request['Attributes'][$this->attrName])) {
+                $request['Attributes'][$this->attrName] = array();
             }
-            array_push($eduPersonEntitlement, $groupName);
+            if (!in_array($groupName, $request['Attributes'][$this->attrName], true)) {
+                array_push($eduPersonEntitlement, $groupName);
+            }
         }
         natsort($eduPersonEntitlement);
         return $eduPersonEntitlement;
@@ -225,7 +237,7 @@ class PerunEntitlement extends ProcessingFilter
             Logger::debug(
                 'No mapping found for group ' . $groupName . ' for SP ' . $request['SPMetadata']['entityid']
             );
-            return $this->entitlementPrefix . 'group:' . $groupName;
+            return $this->entitlementPrefix . 'group:' . $groupName . $this->entitlementAuthority;
         }
     }
 
