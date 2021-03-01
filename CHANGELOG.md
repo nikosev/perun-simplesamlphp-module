@@ -1,17 +1,18 @@
 # Change Log
 All notable changes to this project will be documented in this file.
  
-## [Unreleased]
+## [rciam-4.1.0] - 2021-03-01
+This version is based on upstream v4.1.1.
 
-### [Added]
+### Added
 
 - Add custom attribute mapping
 
-### [Fixed]
+### Fixed
 
 - Fix undefined index when quering groups in LDAP
 
-### [Removed]
+### Removed
 
 - Disable registration for users who are not found in Perun
 - Remove exceptions for unused config options
