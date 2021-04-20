@@ -120,9 +120,11 @@ class PerunIdentity extends \SimpleSAML\Auth\ProcessingFilter
         $this->mode = $config->getValueValidate(self::MODE, self::MODES, self::MODE_FULL);
 
         if (is_null($this->uidsAttr)) {
-            throw new Exception(
-                'perun:PerunIdentity: missing mandatory config option \'' . self::UIDS_ATTR . '\'.'
-            );
+            // throw new Exception(
+            //     'perun:PerunIdentity: missing mandatory config option \'' . self::UIDS_ATTR . '\'.'
+            // );
+            Logger::debug("perun:PerunIdentity: uids is empty. Continuing to next Auth Filter...");
+            return;
         }
         // if ($this->mode === self::MODE_FULL && empty($this->registerUrlBase)) {
         //     throw new Exception(
