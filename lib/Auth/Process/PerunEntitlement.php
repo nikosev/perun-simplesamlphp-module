@@ -45,11 +45,11 @@ class PerunEntitlement extends ProcessingFilter
         $configuration = Configuration::loadFromArray($config);
 
         $this->eduPersonEntitlement = $configuration->getString(self::EDU_PERSON_ENTITLEMENT);
-        $this->releaseForwardedEntitlement = $configuration->getBoolean(self::RELEASE_FORWARDED_ENTITLEMENT, true);
-        $this->forwardedEduPersonEntitlement = $configuration->getString(
-            self::FORWARDED_EDU_PERSON_ENTITLEMENT,
-            $this->releaseForwardedEntitlement ? Configuration::REQUIRED_OPTION : ''
-        );
+        // $this->releaseForwardedEntitlement = $configuration->getBoolean(self::RELEASE_FORWARDED_ENTITLEMENT, true);
+        // $this->forwardedEduPersonEntitlement = $configuration->getString(
+        //     self::FORWARDED_EDU_PERSON_ENTITLEMENT,
+        //     $this->releaseForwardedEntitlement ? Configuration::REQUIRED_OPTION : ''
+        // );
 
         $this->groupNameAARC = $modulePerunConfiguration->getBoolean(self::GROUPNAMEAARC_ATTR, false);
         $this->entitlementPrefix = $modulePerunConfiguration->getString(
