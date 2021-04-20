@@ -127,10 +127,10 @@ class PerunEntitlement extends ProcessingFilter
             //     $groupName = $this->mapGroupName($request, $groupName);
             // }
             $groupName = $this->mapGroupName($request, $groupName);
-            if (empty($request['Attributes'][$this->attrName])) {
-                $request['Attributes'][$this->attrName] = array();
+            if (empty($request['Attributes'][$this->eduPersonEntitlement])) {
+                $request['Attributes'][$this->eduPersonEntitlement] = array();
             }
-            if (!in_array($groupName, $request['Attributes'][$this->attrName], true)) {
+            if (!in_array($groupName, $request['Attributes'][$this->eduPersonEntitlement], true)) {
                 array_push($eduPersonEntitlement, $groupName);
             }
         }
