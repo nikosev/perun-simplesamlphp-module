@@ -137,7 +137,8 @@ class PerunAttributes extends \SimpleSAML\Auth\ProcessingFilter
 
             // write $value to all SP attributes
             foreach ($attrArray as $attribute) {
-                $request['Attributes'][$attribute] = array_merge($request['Attributes'][$attribute], $value);
+                // $request['Attributes'][$attribute] = array_merge($request['Attributes'][$attribute], $value);
+                $request['Attributes'][$attribute] = $value;
             }
         }
     }
