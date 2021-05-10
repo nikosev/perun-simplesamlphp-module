@@ -1,6 +1,15 @@
 # Change Log
 All notable changes to this project will be documented in this file.
  
+## [rciam-4.1.1] - 2021-05-10
+
+### Changed
+
+- Replace attrName with eduPersonEntitlement
+- Remove unused variables from configuration parsing
+- Skip filter when uids array is empty
+- Overwrite all SP attribute values
+
 ## [rciam-4.1.0] - 2021-03-01
 This version is based on upstream v4.1.1.
 
