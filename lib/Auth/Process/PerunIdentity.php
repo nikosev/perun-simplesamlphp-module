@@ -120,11 +120,9 @@ class PerunIdentity extends \SimpleSAML\Auth\ProcessingFilter
         $this->mode = $config->getValueValidate(self::MODE, self::MODES, self::MODE_FULL);
 
         if (is_null($this->uidsAttr)) {
-            // throw new Exception(
-            //     'perun:PerunIdentity: missing mandatory config option \'' . self::UIDS_ATTR . '\'.'
-            // );
-            Logger::debug("perun:PerunIdentity: uids is empty. Continuing to next Auth Filter...");
-            return;
+            throw new Exception(
+                'perun:PerunIdentity: missing mandatory config option \'' . self::UIDS_ATTR . '\'.'
+            );
         }
         // if ($this->mode === self::MODE_FULL && empty($this->registerUrlBase)) {
         //     throw new Exception(
@@ -189,8 +187,10 @@ class PerunIdentity extends \SimpleSAML\Auth\ProcessingFilter
             }
         }
         if (empty($uids)) {
-            throw new Exception('perun:PerunIdentity: ' .
-                'missing one of the mandatory attribute ' . implode(', ', $this->uidsAttr) . ' in request.');
+            // throw new Exception('perun:PerunIdentity: ' .
+            //     'missing one of the mandatory attribute ' . implode(', ', $this->uidsAttr) . ' in request.');
+            Logger::debug("perun:PerunIdentity: uids is empty. Continuing to next Auth Filter...");
+            return;
         }
 
         if (isset($request['Attributes'][$this->sourceIdPEntityIDAttr][0])) {
@@ -215,6 +215,12 @@ class PerunIdentity extends \SimpleSAML\Auth\ProcessingFilter
         $groups = [];
 
         $user = $this->adapter->getPerunUser($idpEntityId, $uids);
+
+        if ($user === null) {
+            Logger::info('Perun user with identity/ies: ' . implode(',', $uids) . ' has NOT been found.');
+            Logger::debug("perun:PerunIdentity: Perun user has NOT been found. Continuing to next Auth Filter...");
+            return;
+        }
 
         if ($this->mode === self::MODE_FULL) {
             // $this->getSPAttributes($this->spEntityId);

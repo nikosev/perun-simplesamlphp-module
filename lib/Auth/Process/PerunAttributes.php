@@ -77,6 +77,7 @@ class PerunAttributes extends \SimpleSAML\Auth\ProcessingFilter
                 "perun:PerunAttributes: 'perun.user' attribute has NOT been found in request. " .
                 "Continuing to next Auth Filter..."
             );
+            return;
         }
 
         $attributes = [];

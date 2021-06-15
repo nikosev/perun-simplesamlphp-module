@@ -1,6 +1,12 @@
 # Change Log
 All notable changes to this project will be documented in this file.
- 
+
+## [Unreleased]
+
+### Fixed
+
+- Skip filter when uids array is empty
+
 ## [rciam-4.1.1] - 2021-05-10
 
 ### Changed
